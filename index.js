@@ -128,6 +128,11 @@ io.on("connection", (socket) => {
   });
 });
 
+app.get('/', (req, res) => {
+  res.send('Hello, Vercel!');
+  console.log("Hello Vercel!")
+});
+
 app.post("/signup", async (req, res) => {
   const { email, password, name } = req.body;
   const newUser = new User({ email, password, name });
