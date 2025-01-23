@@ -1,5 +1,5 @@
 import express from "express";
-import http from "http";
+import http from "https";
 import { Server } from "socket.io";
 import cors from "cors";
 import mongoose, { Schema } from "mongoose";
@@ -52,13 +52,17 @@ await mongoose
 const appServer = http.createServer(app);
 
 const io = new Server(appServer, {
+  path: "/socket",
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
   },
+  allowEIO3: true,
+  wssEngine: ["ws", "wss"],
 });
 
 io.on("connection", (socket) => {
+  console.log("user connected=====" + socket.id);
   socket.on("connected_user", async (user) => {
     if (!user) return;
 
@@ -128,9 +132,9 @@ io.on("connection", (socket) => {
   });
 });
 
-app.get('/', (req, res) => {
-  res.send('Hello, Vercel!');
-  console.log("Hello Vercel!")
+app.get("/", (req, res) => {
+  res.send("Hello, Vercel!");
+  console.log("Hello Vercel!");
 });
 
 app.post("/signup", async (req, res) => {
@@ -183,6 +187,8 @@ app.post("/login", async (req, res) => {
       msg: "User not found",
     });
   }
+
+  res.send("Testing");
 });
 
 app.post("/uploadimage", upload.single("file"), async (req, res) => {
@@ -210,6 +216,6 @@ app.post("/uploadimage", upload.single("file"), async (req, res) => {
   }
 });
 
-appServer.listen(process.env.PORT || 4000, () => {
+appServer.listen(4000, () => {
   console.log("Server is running");
 });
