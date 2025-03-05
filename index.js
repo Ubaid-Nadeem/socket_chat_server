@@ -1,5 +1,5 @@
 import express from "express";
-import http from "https";
+import http from "http";
 import { Server } from "socket.io";
 import cors from "cors";
 import mongoose, { Schema } from "mongoose";
